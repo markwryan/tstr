@@ -8,7 +8,7 @@ module.exports = function (grunt) {
             grunt.log.error("Specify a [site] to create (e.g. my-awesome-website)");
             return;
         }
-        //Create new folders for site
+        //Create new folders for site (test, module)
         var test_path = test_base + '/' + site;
         if(!grunt.file.exists(test_path)) {
             grunt.file.mkdir(test_path);
@@ -23,7 +23,12 @@ module.exports = function (grunt) {
             grunt.fail.warn('Site "' + site + '" was already created.');
         }
 
-        var config_path = config_base + '/' + site + '.json';
-
+        //Move in started config file
+        var config_path = config_base + '/' + site + '.js';
+        if(!grunt.file.exists(config_path)) {
+            grunt.file.copy('grunt/resources/config.js', config_path);
+        } else {
+            grunt.fail.warn('Site "' + site + '" was already created.');
+        }
     });
 };
