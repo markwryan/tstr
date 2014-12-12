@@ -12,6 +12,7 @@ module.exports = function (grunt) {
         var test_path = test_base + '/' + site;
         if(!grunt.file.exists(test_path)) {
             grunt.file.mkdir(test_path);
+            grunt.file.copy('grunt/resources/casper-test.js', test_path + '/HelloWorld.js');
         } else {
             grunt.fail.warn('Site "' + site + '" was already created.');
         }
@@ -27,6 +28,7 @@ module.exports = function (grunt) {
         var config_path = config_base + '/' + site + '.js';
         if(!grunt.file.exists(config_path)) {
             grunt.file.copy('grunt/resources/config.js', config_path);
+
         } else {
             grunt.fail.warn('Site "' + site + '" was already created.');
         }
