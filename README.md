@@ -1,5 +1,5 @@
 # tstr
-Manage CasperJS tests for multiple sites.
+Manage CasperJS tests for multiple environments
 ## Setup
 Clone
 ```
@@ -15,16 +15,16 @@ npm install
 ```
 
 ## Adding a New Site
-Use Grunt to setup a new site. Grunt will create test and module directories and a site-specific config file.
+Use Grunt to setup a new environment . Grunt will create test and module directories and a env specific config file.
 ```
-grunt create:[site_name]
+grunt create:[env_name]
 ```
 ## Running CasperJS Tests
 CasperJS should be setup to run within Grunt.
 ```
 grunt casper
 ```
-or run tests for a specific site:
+or run tests for a specific environment:
 ```
-grunt casper:[site]
+grunt casper:[env]
 ```
