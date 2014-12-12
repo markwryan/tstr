@@ -28,8 +28,3 @@ or run tests for a specific environment:
 ```
 grunt casper:[env]
 ```
-<<<<<<< Updated upstream
-=======
-grunt casper:[site_name]
-```
->>>>>>> Stashed changes
