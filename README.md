@@ -14,7 +14,7 @@ Run npm install
 npm install
 ```
 
-## Adding a New Site
+## Adding a New Environment
 Use Grunt to setup a new environment . Grunt will create test and module directories and a env specific config file.
 ```
 grunt create:[env_name]
