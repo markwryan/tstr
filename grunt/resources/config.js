@@ -1,5 +1,5 @@
 module.exports = {
     default: {
-        siteUrl: '[site_url]'
+        host: '<%= host %>'
     }
 }

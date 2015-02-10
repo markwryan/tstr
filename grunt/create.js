@@ -1,36 +1,59 @@
 module.exports = function (grunt) {
-    var test_base = 'src/test';
-    var module_base = 'src/module';
-    var config_base = 'config/site';
+    var testBase = 'src/test';
+    var moduleBase = 'src/module';
+    var configBase = 'config/env';
 
-    grunt.registerTask('create', 'test management tasks', function (site) {
-        if(typeof site === 'undefined') {
-            grunt.log.error("Specify a [site] to create (e.g. my-awesome-website)");
+    grunt.registerTask('create', 'test management tasks', function (environment, host) {
+        //Did we get some inputs?
+        if(typeof environment === 'undefined' || typeof host === 'undefined') {
+            grunt.log.error("Specify environment name and url base. See the README.md for more info " +
+                "\n grunt create:[env]:[host]" +
+                "\n grunt create:dev:dev.my-sweet-app.io");
             return;
         }
+
         //Create new folders for site (test, module)
-        var test_path = test_base + '/' + site;
-        if(!grunt.file.exists(test_path)) {
-            grunt.file.mkdir(test_path);
-            grunt.file.copy('grunt/resources/casper-test.js', test_path + '/HelloWorld.js');
+        var testPath = testBase + '/' + environment;
+        if(!grunt.file.exists(testPath)) {
+            grunt.file.mkdir(testPath);
+            grunt.file.copy('grunt/resources/casper-test.js', testPath + '/HelloWorld.js');
         } else {
-            grunt.fail.warn('Site "' + site + '" was already created.');
+            grunt.fail.warn('Environment "' + environment + '" was already created.');
         }
 
-        var module_path = module_base + '/' + site;
-        if(!grunt.file.exists(module_path)) {
-            grunt.file.mkdir(module_path);
+        var modulePath = moduleBase + '/' + environment;
+        if(!grunt.file.exists(modulePath)) {
+            grunt.file.mkdir(modulePath);
         } else {
-            grunt.fail.warn('Site "' + site + '" was already created.');
+            grunt.fail.warn('Site "' + environment + '" was already created.');
         }
 
         //Move in started config file
-        var config_path = config_base + '/' + site + '.js';
-        if(!grunt.file.exists(config_path)) {
-            grunt.file.copy('grunt/resources/config.js', config_path);
-
+        var configPath = configBase + '/' + environment + '.js';
+        if(!grunt.file.exists(configPath)) {
+            var configTemplate = grunt.file.read('grunt/resources/config.js');
+            var configFile = grunt.template.process(configTemplate.toString(), {
+                data: {
+                    host: host
+                }
+            });
+            grunt.file.write(configPath, configFile);
         } else {
-            grunt.fail.warn('Site "' + site + '" was already created.');
+            grunt.fail.warn('Site "' + environment + '" was already created.');
         }
+
+        //Edit casper task to add
+        var taskTemplate = grunt.file.read('grunt/resources/casper-task.js.tmpl');
+        var envTask = grunt.template.process(taskTemplate.toString(), {
+            data: {
+                env: environment
+            }
+        });
+        var casperTask = grunt.file.read('grunt/casper.js').toString();
+        casperTask = casperTask.replace(",\n    tasks: ['default']\n};", envTask);
+
+        grunt.file.write('grunt/casper.js', casperTask);
+
+
     });
 };

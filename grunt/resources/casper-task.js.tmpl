@@ -1,0 +1,15 @@
+},
+    <%= env %>:{
+        options: {
+            test: true
+        },
+        files: {
+            'xunit/casper-results-<%= env %>.xml':[
+                'src/test/global',
+                'src/test/<%= env %>'
+            ]
+        }
+    },
+    tasks: ['default']
+};
+
